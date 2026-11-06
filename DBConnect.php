@@ -1,17 +1,18 @@
 <?php
 
+// Ouvre une seule connexion PDO à la base, réutilisée partout.
 class DBConnect
 {
     private PDO $pdo;
 
     public function __construct()
     {
-        $this->pdo = new PDO(
-            'mysql:host=localhost;dbname=contact_online;charset=utf8mb4',
-            'willa',
-            '020798',
-            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-        );
+        $config = require __DIR__ . '/config.php';
+
+        $dsn = 'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'] . ';charset=utf8mb4';
+        $this->pdo = new PDO($dsn, $config['user'], $config['password'], [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        ]);
     }
 
     public function getPDO(): PDO
